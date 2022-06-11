@@ -1,0 +1,46 @@
+h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.sections {
+  display: flex;
+  justify-content: center;
+  column-gap: 5rem;
+  margin-bottom: 20px;
+
+  & li {
+    background-color: rgb(252, 250, 200);
+    font-size: 1.3rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover,
+    &.active {
+      background-color: rgb(242, 191, 191);
+    }
+  }
+}
+
+.search-bar {
+  width: 60%;
+  margin: 0 auto 2rem;
+
+  & input {
+    font-weight: 600;
+    border: none;
+    border-radius: 35rem;
+    width: 100%;
+    padding: 5px 15px;
+    &,
+    &::placeholder {
+      color: rgb(230, 148, 16);
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}

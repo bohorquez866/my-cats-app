@@ -1,0 +1,40 @@
+html {
+  box-sizing: border-box;
+}
+body {
+  background-color: rgb(23, 15, 44);
+  color: rgb(170, 170, 170);
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+ul,
+li,
+ol {
+  list-style: none;
+}
+
+.btn {
+  appearance: none;
+  border: none;
+  display: grid;
+  place-items: center;
+  background-color: transparent;
+  color: rgb(90, 87, 87);
+  cursor: pointer;
+  &.is-fav {
+    color: rgb(230, 135, 18);
+  }
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
