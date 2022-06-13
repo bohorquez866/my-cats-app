@@ -1,4 +1,5 @@
 <template>
+  <load-animation v-if="loading" />
   <the-header />
   <main>
     <Transition>
@@ -13,16 +14,18 @@
 import CatListWrapper from "@/components/CatList/CatListWrapper.vue";
 import CatImageListWrapper from "@/components/FavoriteCats/CatImageListWrapper.vue";
 import TheHeader from "@/components/TheHeader.vue";
+import LoadAnimation from "@/components/LoadAnimation.vue";
 import { mapState } from "vuex";
 export default {
   components: {
     CatImageListWrapper,
     CatListWrapper,
     TheHeader,
+    LoadAnimation,
   },
 
   computed: {
-    ...mapState(["currentSection"]),
+    ...mapState(["currentSection", "loading"]),
   },
 };
 </script>

@@ -1,16 +1,16 @@
 <template>
-  <li class="cat-image-card">
+  <li class="cat-image-card cat-card">
     <img :src="cat?.image.url" :alt="cat?.id" />
     <p>{{ cat?.name }}</p>
 
-    <button class="btn btn__fav-cat" :class="{ 'is-fav': isFavorite }" @click="showModal(true)">
+    <button class="btn btn__fav-cat" :class="{ 'is-fav': isFavorite }" @click="sendDataToModal">
       &#x2764;
     </button>
   </li>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
   props: {
@@ -18,17 +18,19 @@ export default {
   },
 
   computed: {
-    ...mapState(["favoriteCats"]),
+    ...mapGetters(["filteredFavoriteCats"]),
     isFavorite() {
-      return this.favoriteCats.includes(this.cat);
+      return this.filteredFavoriteCats.includes(this.cat);
     },
   },
 
   methods: {
-    ...mapActions(["addFavoriteCat", "showModal"]),
+    ...mapActions(["showModal"]),
+    ...mapMutations(["SELECT_FAV_CAT"]),
 
-    passCatAsProp(cat) {
-      this.addFavoriteCat(cat);
+    sendDataToModal() {
+      this.showModal(true);
+      this.SELECT_FAV_CAT(this.cat);
     },
   },
 };

@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import NotFound from "@/components/NotFound.vue";
+import NotFound from "@/components/layout/NotFound.vue";
 import TheModal from "@/components/TheModal.vue";
 import store from "./store";
 

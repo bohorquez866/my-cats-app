@@ -1,0 +1,18 @@
+@use "../base/vars.scss" as *;
+.navigation {
+  width: 100%;
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 30px;
+  & button {
+    appearance: none;
+    border: none;
+    background-color: $mainColor;
+    width: 100px;
+    font-size: 25px;
+    border-radius: 30px;
+    padding: 5ox 10px;
+  }
+}

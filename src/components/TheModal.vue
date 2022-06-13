@@ -1,10 +1,14 @@
 <template>
   <section class="modal">
-    <slot></slot>
-    <div>
-      <button @click="cancelModal">Cancel</button>
-      <button @click="confirmActionLocal">Confirm</button>
+    <div class="modal-content">
+      <slot></slot>
+      <div>
+        <button class="btn btn-cancel" @click="cancelModal">Cancel</button>
+        <button class="btn btn-confirm" @click="confirmActionLocal">Confirm</button>
+      </div>
     </div>
+
+    <div class="background" @click="cancelModal"></div>
   </section>
 </template>
 
@@ -16,12 +20,13 @@ export default {
 
   methods: {
     ...mapActions(["showModal"]),
+
     cancelModal() {
       this.showModal(false);
     },
+
     confirmActionLocal() {
-      const tp = typeof this.confirmAction;
-      console.log(tp, this.confirmAction);
+      this.confirmAction();
       this.showModal(false);
     },
   },

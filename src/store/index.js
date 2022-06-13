@@ -4,11 +4,14 @@ const store = createStore({
   state() {
     return {
       cats: [],
-      catFetchOps: { page: 1, limit: 6 },
       favoriteCats: [],
+      catFetchOps: { page: 1, limit: 6 },
       currentSection: "catListWrapper",
+      catSearch: "",
       modalIsOpen: false,
       FavCatToRemove: null,
+      FavPage: { action: "increase", count: 1 },
+      loading: true,
     };
   },
 
@@ -27,9 +30,50 @@ const store = createStore({
 
       return config;
     },
+
+    filteredCats(state, search) {
+      if (state.currentSection === "catListWrapper") {
+        return state.cats.filter((cat) =>
+          cat?.name.toLowerCase().includes(state.catSearch.toLowerCase()),
+        );
+      }
+    },
+
+    filteredFavoriteCats(state) {
+      if (state.currentSection === "catImageListWrapper") {
+        return state.favoriteCats.filter((cat) =>
+          cat?.name.toLowerCase().includes(state.catSearch.toLowerCase()),
+        );
+      }
+    },
+
+    paginatedFilteredFavoriteCats(state, getters) {
+      const numberOfCats = 6;
+      const initialIndex = (state.FavPage.count - 1) * numberOfCats;
+      const finalIndex = state.FavPage.count * numberOfCats;
+      return getters.filteredFavoriteCats?.slice(initialIndex, finalIndex);
+    },
   },
 
   mutations: {
+    HANDLE_FAV_PAGE(state, action = "increase") {
+      state.FavPage.action = action;
+
+      if (state.FavPage.action === "increase") {
+        state.FavPage.count++;
+      } else {
+        state.FavPage.count--;
+      }
+    },
+
+    TOGGLE_LOADING(state, loading) {
+      state.loading = loading;
+    },
+
+    SET_FAV_PAGE(state, page) {
+      state.FavPage = page;
+    },
+
     SET_SECTION(state, section) {
       state.currentSection = section;
     },
@@ -38,21 +82,28 @@ const store = createStore({
       state.modalIsOpen = modal;
     },
 
+    SET_SEARCH(state, search) {
+      state.catSearch = search;
+    },
+
     SET_CATS(state, cats) {
       state.cats = cats;
     },
 
     SHOW_NEXT_PAGE(state) {
       if (state.catFetchOps.page < 5) {
+        this.commit("TOGGLE_LOADING", true);
         state.catFetchOps.page++;
       }
     },
 
     SHOW_PREV_PAGE(state) {
       if (state.catFetchOps.page > 1) {
+        this.commit("TOGGLE_LOADING", true);
         state.catFetchOps.page--;
       }
     },
+
     SHOW_PAGE_NUMBER(state, pageNumber) {
       state.catFetchOps.page = pageNumber;
     },
@@ -63,9 +114,7 @@ const store = createStore({
         state.favoriteCats.splice(state.favoriteCats.indexOf(cat), 1);
       }
     },
-    ADD_FILTERED_FAV_CATS(state, filteredCats) {
-      state.favoriteCats = filteredCats;
-    },
+
     SELECT_FAV_CAT(state, favCat) {
       state.FavCatToRemove = favCat;
     },
@@ -79,17 +128,19 @@ const store = createStore({
         commit("SET_CATS", cats);
       } catch (err) {
         console.log(err);
+      } finally {
+        commit("TOGGLE_LOADING", false);
       }
     },
 
     async showNextPage({ dispatch, commit }) {
-      commit("SHOW_NEXT_PAGE");
       dispatch("fetchCats");
+      commit("SHOW_NEXT_PAGE");
     },
 
     async showPreviousPage({ dispatch, commit }) {
-      commit("SHOW_PREV_PAGE");
       dispatch("fetchCats");
+      commit("SHOW_PREV_PAGE");
     },
 
     async showPageNumber({ dispatch, commit }, pageNumber) {

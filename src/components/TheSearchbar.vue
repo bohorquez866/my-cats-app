@@ -1,6 +1,10 @@
 <template>
   <div class="search-bar">
-    <input v-model="searchTerm" type="search" placeholder="I love cats which have . . ." />
+    <input
+      v-model="barSearch"
+      type="search"
+      placeholder="you surely love cats, look for one here . . ."
+    />
   </div>
 </template>
 
@@ -9,32 +13,22 @@ import { mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
-      searchTerm: "",
+      barSearch: "",
     };
-  },
-  watch: {
-    searchTerm(newValue) {
-      let filteredCats;
-      if (this.currentSection === "catListWrapper") {
-        filteredCats = this.cats.filter((cat) =>
-          cat.name.toLowerCase().includes(newValue.toLowerCase()),
-        );
-        console.log(filteredCats);
-      } else {
-        filteredCats = this.favoriteCats.filter((cat) =>
-          cat.name.toLowerCase().includes(newValue.toLowerCase()),
-        );
-        console.log(filteredCats);
-        this.ADD_FILTERED_FAV_CATS(filteredCats);
-      }
-    },
   },
 
   computed: {
-    ...mapState(["currentSection", "cats", "favoriteCats"]),
+    ...mapState(["currentSection", "catSearch", "favoriteCats"]),
   },
+
+  watch: {
+    barSearch(value) {
+      this.SET_SEARCH(value);
+    },
+  },
+
   methods: {
-    ...mapMutations(["ADD_FILTERED_FAV_CATS", "SET_CATS"]),
+    ...mapMutations(["ADD_FILTERED_FAV_CATS", "SET_SEARCH"]),
   },
 };
 </script>
